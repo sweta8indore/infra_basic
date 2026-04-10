@@ -1,0 +1,19 @@
+trigger:none
+
+pool:cicdpool
+
+steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your PowerShell commands here.
+        
+        Write-Host "Hello World"
+
+
+
+
+
+
+
