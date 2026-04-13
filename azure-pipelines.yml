@@ -4,6 +4,10 @@ pool:
  name: cicdpool
 
 steps:
+- powershell: |
+    Write-Host "Hello, World from Azure DevOps Pipeline!"
+  displayName: "Hello World PS"
+
 - task: TerraformTask@5
   inputs:
     provider: 'azurerm'
@@ -19,12 +23,12 @@ steps:
 #     command: 'plan'
 #     environmentServiceNameAzureRM: 'cicdinfra_sc'
 
-- task: TerraformTask@5
-  inputs:
-    provider: 'azurerm'
-    command: 'destroy'
-    commandOptions: '-auto-approve'
-    environmentServiceNameAzureRM: 'cicdinfra_sc'
+# - task: TerraformTask@5
+#   inputs:
+#     provider: 'azurerm'
+#     command: 'destroy'
+#     commandOptions: '-auto-approve'
+#     environmentServiceNameAzureRM: 'cicdinfra_sc'
 
 
 
