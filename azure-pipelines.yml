@@ -9,6 +9,9 @@ steps:
     provider: 'azurerm'
     command: 'init'
     backendServiceArm: 'cicdinfra_sc'
+    backendAzureRmStorageAccountName: 'terraformstatefile55'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'dev.terraform.state'
 
 
 
