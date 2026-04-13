@@ -4,7 +4,12 @@ pool:
  name: cicdpool
 
 steps:
-- script: "echo Hello: World"
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'cicdinfra_sc'
+
 
 
 
