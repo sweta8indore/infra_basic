@@ -23,6 +23,7 @@ jobs:
 
 
 - job: approval
+  dependsOn: terraformplan
   pool: server
   steps:
     - task: ManualValidation@1
@@ -32,7 +33,16 @@ jobs:
 
 
 - job: terraformapply
-  steps:
+  dependsOn: approval
+  steps:  
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'cicdinfra_sc'
+        backendAzureRmStorageAccountName: 'terraformstatefile55'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.state'
     - task: TerraformTask@5
       inputs:
         provider: 'azurerm'
