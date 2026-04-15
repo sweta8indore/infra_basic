@@ -3,51 +3,79 @@ trigger: none
 pool:
  name: cicdpool
 
-jobs:
-# - job: terraformplan
-#   steps:
-#     - task: TerraformTask@5
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'init'
-#         backendServiceArm: 'cicdinfra_sc'
-#         backendAzureRmStorageAccountName: 'terraformstatefile55'
-#         backendAzureRmContainerName: 'tfstate'
-#         backendAzureRmKey: 'dev.terraform.state'
+stages:
+  - stage: initandplan
+    displayName: init and plan
+    jobs:
+      - job: terraforminitplan
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendServiceArm: 'cicdinfra_sc'
+            backendAzureRmStorageAccountName: 'terraformstatefile55'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: 'dev.terraform.state'
 
-#     - task: TerraformTask@5
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'plan'
-#         environmentServiceNameAzureRM: 'cicdinfra_sc'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            environmentServiceNameAzureRM: 'cicdinfra_sc'
 
+# stages:
+#   -stage: initandplan
+#    displayname: init and plan
+#     jobs:
+#     - job: terraformplan
+#        steps:
+      #  - task: TerraformTask@5
+      #   inputs:
+      #     provider: 'azurerm'
+      #     command: 'init'
+      #     backendServiceArm: 'cicdinfra_sc'
+      #     backendAzureRmStorageAccountName: 'terraformstatefile55'
+      #     backendAzureRmContainerName: 'tfstate'
+      #     backendAzureRmKey: 'dev.terraform.state'
 
-# - job: approval
-#   dependsOn: terraformplan
-#   pool: server
-#   steps:
-#     - task: ManualValidation@1
-#       inputs:
+      # - task: TerraformTask@5
+      #   inputs:
+      #     provider: 'azurerm'
+      #     command: 'plan'
+      #     environmentServiceNameAzureRM: 'cicdinfra_sc'
+
+#  -stage: manualvalidation
+#   displayname: manual validation
+#   jobs: 
+#   - job: approval
+#     dependsOn: terraformplan
+#     pool: server
+#     steps:
+#       - task: ManualValidation@1
+#        inputs:
 #         notifyUsers: 'manoj@nevalosstechnologies.com'
 #         approvers: 'manoj@nevalosstechnologies.com'
 
-
-- job: terraformapply
-  steps:  
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        backendServiceArm: 'cicdinfra_sc'
-        backendAzureRmStorageAccountName: 'terraformstatefile55'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'dev.terraform.state'
-    - task: TerraformTask@5
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        commandOptions: '-auto-approve'
-        environmentServiceNameAzureRM: 'cicdinfra_sc'
+#  -stage: apply
+#   displayname: terraform apply
+#   jobs: 
+#   - job: terraformapply
+#     steps:  
+#       - task: TerraformTask@5
+#         inputs:
+#           provider: 'azurerm'
+#           command: 'init'
+#           backendServiceArm: 'cicdinfra_sc'
+#           backendAzureRmStorageAccountName: 'terraformstatefile55'
+#           backendAzureRmContainerName: 'tfstate'
+#           backendAzureRmKey: 'dev.terraform.state'
+#       - task: TerraformTask@5
+#         inputs:
+#           provider: 'azurerm'
+#           command: 'apply'
+#           commandOptions: '-auto-approve'
+#           environmentServiceNameAzureRM: 'cicdinfra_sc'
 
 
 
