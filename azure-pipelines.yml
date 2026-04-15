@@ -4,44 +4,42 @@ pool:
  name: cicdpool
 
 stages:
-  - stage: initandplan
-    displayName: init and plan
-    jobs:
-      - job: terraforminitplan
-        steps:
-        - task: TerraformTask@5
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            backendServiceArm: 'cicdinfra_sc'
-            backendAzureRmStorageAccountName: 'terraformstatefile55'
-            backendAzureRmContainerName: 'tfstate'
-            backendAzureRmKey: 'dev.terraform.state'
+  # - stage: initandplan
+  #   displayName: init and plan
+  #   jobs:
+  #     - job: terraforminitplan
+  #       steps:
+  #       - task: TerraformTask@5
+  #         inputs:
+  #           provider: 'azurerm'
+  #           command: 'init'
+  #           backendServiceArm: 'cicdinfra_sc'
+  #           backendAzureRmStorageAccountName: 'terraformstatefile55'
+  #           backendAzureRmContainerName: 'tfstate'
+  #           backendAzureRmKey: 'dev.terraform.state'
 
-        - task: TerraformTask@5
-          inputs:
-            provider: 'azurerm'
-            command: 'plan'
-            environmentServiceNameAzureRM: 'cicdinfra_sc'
+  #       - task: TerraformTask@5
+  #         inputs:
+  #           provider: 'azurerm'
+  #           command: 'plan'
+  #           environmentServiceNameAzureRM: 'cicdinfra_sc'
 
-  - stage: manualvalidation
-    displayName: manual validation
-    dependsOn: initandplan
-    jobs:
-      - job: approval
-        pool: server
-        steps: 
-        - task: ManualValidation@1
-          inputs:
-            notifyUsers: 'manoj@nevalosstechnologies.com'
-            approvers: 'manoj@nevalosstechnologies.com'
+  # - stage: manualvalidation
+  #   displayName: manual validation
+  #   dependsOn: initandplan
+  #   jobs:
+  #     - job: approval
+  #       pool: server
+  #       steps: 
+  #       - task: ManualValidation@1
+  #         inputs:
+  #           notifyUsers: 'manoj@nevalosstechnologies.com'
+  #           approvers: 'manoj@nevalosstechnologies.com'
         
-
 
 
   - stage: apply
     displayName: terraform apply
-    dependsOn: manualvalidation
     jobs: 
       - job: terraformapply
         steps:  
@@ -56,7 +54,7 @@ stages:
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
-              command: 'apply'
+              command: 'destroy'
               commandOptions: '-auto-approve'
               environmentServiceNameAzureRM: 'cicdinfra_sc'
 
