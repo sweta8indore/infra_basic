@@ -46,7 +46,8 @@ stages:
         - script: |
             echo $(INFRACOST_API_KEY)        
         - powershell: |
-            $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
+            variables:
+            INFRACOST_API_KEY: "ico-znmyO2VEvLypx7lKVTMNzoQ3E19P7hMD"
             Write-Host "Key length check:"
             Write-Host $env:INFRACOST_API_KEY.Length
             $(System.DefaultWorkingDirectory)\infracost\infracost.exe breakdown --path=plan.json --format=table
