@@ -3,6 +3,10 @@ trigger: none
 pool:
  name: cicdpool
 
+variables:
+- name: INFRACOST_API_KEY
+  value: $(INFRACOST_API_KEY)
+
 stages:
   - stage: initandplan
     displayName: init and plan
@@ -46,8 +50,7 @@ stages:
         - script: |
             echo $(INFRACOST_API_KEY)        
         - powershell: |
-            variables:
-            INFRACOST_API_KEY: "ico-znmyO2VEvLypx7lKVTMNzoQ3E19P7hMD"
+            $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
             $(System.DefaultWorkingDirectory)\infracost\infracost.exe breakdown --path=plan.json --format=table
 
   # - stage: apply
