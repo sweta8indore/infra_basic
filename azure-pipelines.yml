@@ -51,7 +51,7 @@ stages:
             echo $(INFRACOST_API_KEY)        
         - powershell: |
             $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
-            $(System.DefaultWorkingDirectory)\infracost\infracost.exe breakdown --path=plan.json --format=table
+            & "$(System.DefaultWorkingDirectory)\infracost\infracost.exe" breakdown --path=plan.json --format=table
 
   # - stage: apply
   #   displayName: terraform apply
