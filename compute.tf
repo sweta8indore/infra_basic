@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "nic" {
+#resource "azurerm_network_interface" "nic" {
 #   name                = "test-nic"
 #   location            = azurerm_resource_group.test-rg.location
 #   resource_group_name = azurerm_resource_group.test-rg.name
