@@ -11,10 +11,11 @@ stages:
         steps:
 
         # Step 1: Install Infracost
-        - script: |
-            curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
+        - powershell: |
+            Invoke-WebRequest https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.ps1 -OutFile install.ps1
+            .\install.ps1
             infracost --version
-          displayName: "Install Infracost"
+          displayName: "Install Infracost (Windows)"
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
