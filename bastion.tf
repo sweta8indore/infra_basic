@@ -5,13 +5,13 @@
 #   address_prefixes     = ["10.0.3.0/27"]
 # }
 
-resource "azurerm_public_ip" "pip" {
-  name                = "test-pip"
-  location            = azurerm_resource_group.test-rg.location
-  resource_group_name = azurerm_resource_group.test-rg.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
+# resource "azurerm_public_ip" "pip" {
+#   name                = "test-pip"
+#   location            = azurerm_resource_group.test-rg.location
+#   resource_group_name = azurerm_resource_group.test-rg.name
+#   allocation_method   = "Static"
+#   sku                 = "Standard"
+# }
 
 # resource "azurerm_bastion_host" "basthost" {
 #   name                = "test-bastion"
@@ -25,9 +25,9 @@ resource "azurerm_public_ip" "pip" {
 #   }
 # }
 # VM ka Private IP dekhne ke liye (Bastion se connect karne ke liye)
-output "vm_private_ip" {
-  value = azurerm_network_interface.nic.private_ip_address
-}
+# output "vm_private_ip" {
+#   value = azurerm_network_interface.nic.private_ip_address
+# }
 
 # Bastion ka Public IP dekhne ke liye
 # output "bastion_public_ip" {
