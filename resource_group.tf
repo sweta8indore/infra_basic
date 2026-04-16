@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "test-rg" {
-  name     = "rg-dev"
+  name     = "rg-prod"
   location = "central india"
 }
