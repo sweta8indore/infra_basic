@@ -44,9 +44,8 @@ stages:
         - script: |
             terraform show -json tfplan.binary > plan.json
         - script: |
+            set INFRACOST_API_KEY=$(INFRACOST_API_KEY)
             $(System.DefaultWorkingDirectory)\infracost\infracost.exe breakdown --path=plan.json --format=table
-          env:
-            INFRACOST_API_KEY: ${env:INFRACOST_API_KEY}
         # - script: |
         #     terraform plan -out=tfplan.binary
         #     terraform show -json tfplan.binary > plan.json
