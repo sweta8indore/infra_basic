@@ -37,9 +37,8 @@ stages:
             terraform show -json tfplan.binary > plan.json
 
         - script: |
-            infracost breakdown --path=plan.json \
-              --format=table
-            env:
+            infracost breakdown --path=plan.json --format=table
+          env:
             INFRACOST_API_KEY: $(INFRACOST_API_KEY)
 
   # - stage: apply
