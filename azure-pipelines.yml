@@ -55,7 +55,7 @@ stages:
                 targetType: 'inline'
                 script: |
                   $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
-                              & "$(System.DefaultWorkingDirectory)\infracost\infracost.exe" breakdown --path=plan.json --format=table
+                  Write-Host "API Key set"
             # $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
             # & "$(System.DefaultWorkingDirectory)\infracost\infracost.exe" breakdown --path=plan.json --format=table
 
