@@ -1,11 +1,11 @@
 trigger: none
 
 pool:
- name: cicdpool
+  name: cicdpool
 
 variables:
 - name: INFRACOST_API_KEY
-  value: $(INFRACOST_API_KEY)
+  value: $(INFRACOST_API_KEY) # Ensure this is defined in your Pipeline Library/Variables
 
 stages:
   - stage: initandplan
@@ -14,20 +14,13 @@ stages:
       - job: terraforminitplan
         steps:
 
-        # Step 1: Install Infracost
+        # Step 1: Install Infracost (Windows)
         - powershell: |
-            # Download Infracost zip
             Invoke-WebRequest https://github.com/infracost/infracost/releases/latest/download/infracost-windows-amd64.zip -OutFile infracost.zip
+            Expand-Archive infracost.zip -DestinationPath $(Agent.TempDirectory)\infracost -Force
+            Write-Host "##vso[task.prependpath]$(Agent.TempDirectory)\infracost"
+          displayName: "Install Infracost"
 
-            # Unzip
-            Expand-Archive infracost.zip -DestinationPath infracost -Force
-
-            # Add to PATH (temporary for pipeline)
-            $env:PATH += ";$(System.DefaultWorkingDirectory)\infracost"
-
-            # Verify
-            infracost --version
-          displayName: "Install Infracost (Windows)"
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
@@ -45,19 +38,17 @@ stages:
             environmentServiceNameAzureRM: 'cicdinfra_sc'
             commandOptions: '-out=tfplan.binary'
 
+        # Generate JSON plan
         - script: |
             terraform show -json tfplan.binary > plan.json
-        - script: |
-            echo $(INFRACOST_API_KEY)        
-        - powershell: |
-        - task: PowerShell@2
-          inputs:
-            targetType: 'inline'
-            script: |
-              $env:INFRACOST_API_KEY = "$(INFRACOST_API_KEY)"
-              Write-Host "API Key set successfully"
-              & "$(System.DefaultWorkingDirectory)\infracost\infracost.exe" breakdown --path=plan.json --format=table
+          displayName: "Generate Plan JSON"
 
+        # Run Infracost breakdown
+        - powershell: |
+            infracost breakdown --path=plan.json --format=table
+          env:
+            INFRACOST_API_KEY: $(INFRACOST_API_KEY)
+          displayName: "Infracost Breakdown"
   # - stage: apply
   #   displayName: terraform apply
   #   jobs: 
