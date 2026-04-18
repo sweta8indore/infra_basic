@@ -48,6 +48,19 @@ stages:
           env:
             INFRACOST_API_KEY: $(INFRACOST_API_KEY)
           displayName: "Infracost Breakdown"
+
+        - script: |
+            curl -u :$(System.AccessToken) \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "sourceRefName": "refs/heads/infracost-report",
+              "targetRefName": "refs/heads/main",
+              "title": "Infracost Report",
+              "description": "Cost estimation added"
+            }' \
+            https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repoId}/pullrequests?api-version=7.0
+          displayName: Create PR
   # - stage: apply
   #   displayName: terraform apply
   #   jobs: 
