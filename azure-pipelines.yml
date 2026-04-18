@@ -49,18 +49,26 @@ stages:
             INFRACOST_API_KEY: $(INFRACOST_API_KEY)
           displayName: "Infracost Breakdown"
 
-        - script: |
-            curl -u :$(System.AccessToken) \
-            -X POST \
-            -H "Content-Type: application/json" \
-            -d '{
-              "sourceRefName": "refs/heads/infracost-report",
-              "targetRefName": "refs/heads/main",
-              "title": "Infracost Report",
-              "description": "Cost estimation added"
-            }' \
-            https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repoId}/pullrequests?api-version=7.0
+        - task: PowerShell@2
           displayName: Create PR
+          inputs:
+            targetType: 'inline'
+            script: |
+              $url = "https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repoId}/pullrequests?api-version=7.0"
+
+              $body = @{
+                sourceRefName = "refs/heads/infracost-report"
+                targetRefName = "refs/heads/main"
+                title = "Infracost Report"
+                description = "Cost estimation added"
+              } | ConvertTo-Json
+
+              $headers = @{
+                Authorization = "Bearer $(System.AccessToken)"
+                "Content-Type" = "application/json"
+              }
+
+              Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body
   # - stage: apply
   #   displayName: terraform apply
   #   jobs: 
