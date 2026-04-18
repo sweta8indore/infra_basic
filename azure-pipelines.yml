@@ -4,8 +4,7 @@ pool:
   name: cicdpool
 
 variables:
-- name: INFRACOST_API_KEY
-  value: $(INFRACOST_API_KEY) # Ensure this is defined in your Pipeline Library/Variables
+- group: infra_cost
 
 stages:
   - stage: initandplan
